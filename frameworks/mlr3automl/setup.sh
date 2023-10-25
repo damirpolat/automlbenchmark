@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 HERE=$(dirname "$0")
 VERSION=${1:-"stable"}
-REPO=${2:-"a-hanf/mlr3automl"}
+REPO=${2:-"damirpolat/mlr3automl"}
 MLR_REPO=${3:-"https://github.com/mlr-org"}
 
 # Version can be specified as 'stable', 'latest', a branch or a commit hash (indicated by starting with '#')
 if [[ "$VERSION" == "latest" || "$VERSION" == "stable" ]]; then
-  VERSION="master"
+  VERSION="main"
 fi
 
 if [[ "$VERSION" =~ ^# ]]; then
@@ -44,7 +44,7 @@ mkdir "${LIB}"
 Rscript -e 'options(install.packages.check.source="no"); install.packages("remotes", repos="https://cloud.r-project.org/", lib="'"${LIB}"'")'
 Rscript -e 'options(install.packages.check.source="no"); install.packages(c("xgboost", "ranger", "LiblineaR", "emoa", "e1071", "glmnet"), repos="https://cloud.r-project.org/", lib="'"${LIB}"'")'
 Rscript -e '.libPaths("'"${LIB}"'"); remotes::install_github("mlr-org/mlr3learners", dependencies=TRUE)'
-Rscript -e '.libPaths("'"${LIB}"'"); remotes::install_github("mlr-org/mlr3extralearners")'
+Rscript -e '.libPaths("'"${LIB}"'"); remotes::install_github("mlr-org/mlr3extralearners", dependencies=TRUE)'
 Rscript -e '.libPaths("'"${LIB}"'"); remotes::install_github("'"${REPO}"'", lib="'"${LIB}"'", dependencies=TRUE)'
 
 OFFICIAL_VERSION=$(Rscript -e '.libPaths("'"${LIB}"'"); packageVersion("mlr3automl")' | awk '{print $2}' | sed "s/[‘’]//g")

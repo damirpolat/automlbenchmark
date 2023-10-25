@@ -166,7 +166,7 @@ MLPlanWEKA:
 
 mlr3automl:
   version: 'stable'
-  project: https://github.com/a-hanf/mlr3automl
+  project: https://github.com/damirpolat/mlr3automl
 
 NaiveAutoML:
   version: 'stable'
