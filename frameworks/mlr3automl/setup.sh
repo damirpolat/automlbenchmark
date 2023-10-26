@@ -42,10 +42,11 @@ LIB="${HERE}/lib/"
 mkdir "${LIB}"
 
 Rscript -e 'options(install.packages.check.source="no"); install.packages("remotes", repos="https://cloud.r-project.org/", lib="'"${LIB}"'")'
-Rscript -e 'options(install.packages.check.source="no"); install.packages(c("xgboost", "ranger", "LiblineaR", "emoa", "e1071", "glmnet"), repos="https://cloud.r-project.org/", lib="'"${LIB}"'")'
-Rscript -e '.libPaths("'"${LIB}"'"); remotes::install_github("mlr-org/mlr3learners", dependencies=TRUE)'
-Rscript -e '.libPaths("'"${LIB}"'"); remotes::install_github("mlr-org/mlr3extralearners", dependencies=TRUE)'
-Rscript -e '.libPaths("'"${LIB}"'"); remotes::install_github("'"${REPO}"'", lib="'"${LIB}"'", dependencies=TRUE)'
+Rscript -e 'options(install.packages.check.source="no"); install.packages(c("xgboost", "ranger", "kknn", "rpart", "glmnet"), repos="https://cloud.r-project.org/", lib="'"${LIB}"'")'
+Rscript -e 'options(install.packages.check.source="no"); install.packages(c("mlr3oml"), repos="https://cloud.r-project.org/", lib="'"${LIB}"'")'
+Rscript -e '.libPaths("'"${LIB}"'"); remotes::install_github("mlr-org/mlr3learners", dependencies=TRUE, auth_token=Sys.getenv("GITHUB_PAT"))'
+Rscript -e '.libPaths("'"${LIB}"'"); remotes::install_github("mlr-org/mlr3extralearners", auth_token=Sys.getenv("GITHUB_PAT"))'
+Rscript -e '.libPaths("'"${LIB}"'"); remotes::install_github("'"${REPO}"'", lib="'"${LIB}"'", dependencies=TRUE, auth_token=Sys.getenv("GITHUB_PAT"))'
 
 OFFICIAL_VERSION=$(Rscript -e '.libPaths("'"${LIB}"'"); packageVersion("mlr3automl")' | awk '{print $2}' | sed "s/[‘’]//g")
 echo "${OFFICIAL_VERSION}#${VERSION:0:7}" >> "${HERE}/.setup/installed"
