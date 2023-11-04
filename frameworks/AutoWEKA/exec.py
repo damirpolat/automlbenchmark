@@ -15,14 +15,13 @@ def run(dataset: Dataset, config: TaskConfig):
     log.info(f"\n**** AutoWEKA [v{config.framework_version}]****\n")
 
     is_classification = config.type == 'classification'
-    if not is_classification:
-        raise ValueError('Regression is not supported.')
 
     # Mapping of benchmark metrics to Weka metrics
     metrics_mapping = dict(
         acc='errorRate',
         auc='areaUnderROC',
-        logloss='kBInformation'
+        logloss='kBInformation',
+        rmse='rootMeanSquaredError'
     )
     metric = metrics_mapping[config.metric] if config.metric in metrics_mapping else None
     if metric is None:
@@ -79,17 +78,23 @@ def run(dataset: Dataset, config: TaskConfig):
     if not os.path.exists(weka_file):
         raise NoResultError("AutoWEKA failed producing any prediction.")
     with open(weka_file, 'r') as weka_file:
-        probabilities = []
+        probabilities = [] if is_classification else None
         predictions = []
         truth = []
-        for line in weka_file.readlines()[1:-1]:
-            inst, actual, predicted, error, *distribution = line.split(',')
-            pred_probabilities = [pred_probability.replace('*', '').replace('\n', '') for pred_probability in distribution]
-            _, pred = predicted.split(':')
-            _, tru = actual.split(':')
-            probabilities.append(pred_probabilities)
-            predictions.append(pred)
-            truth.append(tru)
+        if is_classification:
+            for line in weka_file.readlines()[1:-1]:
+                inst, actual, predicted, error, *distribution = line.split(',')
+                pred_probabilities = [pred_probability.replace('*', '').replace('\n', '') for pred_probability in distribution]
+                _, pred = predicted.split(':')
+                _, tru = actual.split(':')
+                probabilities.append(pred_probabilities)
+                predictions.append(pred)
+                truth.append(tru)
+        else:
+            for line in weka_file.readlines()[1:-1]:
+                inst, actual, predicted, error = line.split(',')
+                predictions.append(predicted)
+                truth.append(actual)
 
     save_predictions(dataset=dataset,
                      output_file=config.output_predictions_file,
