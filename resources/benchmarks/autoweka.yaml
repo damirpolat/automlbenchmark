@@ -1,0 +1,55 @@
+---
+
+- name: dexter
+  openml_task_id: 146156
+
+- name: credit-g
+  openml_task_id: 31
+
+- name: dorothea
+  openml_task_id: 146157
+
+- name: yeast
+  openml_task_id: 2073
+
+- name: amazon-commerce-reviews-set
+  openml_task_id: 10090
+
+- name: semeion
+  openml_task_id: 9964
+
+- name: car
+  openml_task_id: 146821
+
+- name: madelon
+  openml_task_id: 9976
+
+- name: kr-vs-kp
+  openml_task_id: 3
+
+- name: abalone-classification
+  openml_task_id: 2075
+
+- name: wine-quality-classification
+  openml_task_id: 146217
+  
+- name: wine-quality-regression
+  openml_task_id: 211847
+  
+- name: waveform-5000
+  openml_task_id: 58
+  
+- name: gisette
+  openml_task_id: 167213
+
+- name: MNIST
+  openml_task_id: 3573
+  
+- name: Shuttle
+  openml_task_id: 146212
+
+- name: KDDCup09_appetency
+  openml_task_id: 3945
+
+- name: CIFAR-10
+  openml_task_id: 167124
